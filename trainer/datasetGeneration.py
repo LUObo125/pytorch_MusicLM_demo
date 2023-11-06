@@ -9,17 +9,17 @@ from x_clip.tokenizer import tokenizer
 #dataset
 ############################
 
-dir_path = 'F:\Gitstore\musiclm\musiclmpytorch\musicdata'
-file_ls = os.listdir('F:\Gitstore\musiclm\musiclmpytorch\musicdata')
+dir_path = '/path/to/audio/files'
+file_ls = os.listdir(dir_path)
 
+# if you want use other dataset, please check the format fist, may can't be used here 
 dataset = load_dataset("google/MusicCaps")
 
-#le = preprocessing.LabelEncoder()
 # get a ton of <sound, text> pairs and train
 
 def load_and_process_audio(file_path, target_length):
     waveform, _ = torchaudio.load(file_path)
-    # 将音频裁剪或填充到指定的长度
+    # Trim or pad the audio to a specified length
     if waveform.shape[1] > target_length:
         waveform = waveform[:, :target_length]
     else:
@@ -28,7 +28,6 @@ def load_and_process_audio(file_path, target_length):
     waveform = waveform.mean(0)
     return waveform
 
-# 加载文字描述
 def load_text(filename, dataset):
     index = dataset['train']['ytid'].index(filename)
     text = dataset['train']['aspect_list'][index]
@@ -42,11 +41,8 @@ def load_text(filename, dataset):
 audio_tensors = []
 text_tensors = []
 
-min_length = 88200
+min_length = min([torchaudio.load(os.path.join(dir_path, file))[0].shape[1] for file in file_ls])
 
-num_total = 500
-num = 0
-# 遍历文件列表并加载音频和文本数据
 for filename_with_extension in file_ls :
 
     filename = os.path.splitext(filename_with_extension)[0]  # 去掉扩展名
@@ -57,13 +53,10 @@ for filename_with_extension in file_ls :
     
     audio_tensors.append(audio)
     text_tensors.append(text)
-    num += 1
-    if num >= num_total:
-        break
 
 # 将列表转换为张量
 wavs = torch.stack(audio_tensors)
 texts = torch.stack(text_tensors)
 
-torch.save(wavs,'wavs_small.pt')
-torch.save(texts,'texts_small.pt')
+torch.save(wavs,'wavs.pt')
+torch.save(texts,'texts.pt')

@@ -27,7 +27,7 @@ mulan = MuLaN(
     text_transformer = text_transformer
 ).cuda()
 # setup the quantizer with the namespaced conditioning embeddings, unique per quantizer as well as namespace (per transformer)
-MuLaN.load(mulan, 'F:/Gitstore/musiclm/results/mulan.120.pt')
+MuLaN.load(mulan, 'path/to/mulan/checkpoint.pt')
 quantizer = MuLaNEmbedQuantizer(
     mulan = mulan,                          # pass in trained mulan from above
     conditioning_dims = (1024, 1024, 1024), # say all three transformers have model dimensions of 1024
@@ -37,12 +37,12 @@ quantizer = MuLaNEmbedQuantizer(
 # now say you want the conditioning embeddings for semantic transformer
 
 wav2vec = HubertWithKmeans(
-    checkpoint_path = 'F:/Gitstore/musiclm/musiclmpytorch/hubert/hubert_base_ls960.pt',
-    kmeans_path = 'F:/Gitstore/musiclm/musiclmpytorch/hubert/hubert_base_ls960_L9_km500.bin'
+    checkpoint_path = 'path/to/hubert_base_ls960.pt',
+    kmeans_path = 'path/to/hubert_base_ls960_L9_km500.bin'
 )
 
 
-soundstream = SoundStream.init_and_load_from('F:/Gitstore/musiclm/results/soundstream.30.pt')
+soundstream = SoundStream.init_and_load_from('path/to/soundstream/checkpoint.pt')
 
 coarse_transformer = CoarseTransformer(
     num_semantic_tokens = wav2vec.codebook_size,
@@ -60,7 +60,7 @@ trainer = CoarseTransformerTrainer(
     codec = soundstream,
     wav2vec = wav2vec,
     audio_conditioner = quantizer,   # pass in the MulanEmbedQuantizer instance above
-    folder ='F:\Gitstore\musiclm\musiclmpytorch\musicdata',
+    folder ='/path/to/audio/files',
     batch_size = 1,
     data_max_length = 320 * 32,
     num_train_steps = 1_000_000

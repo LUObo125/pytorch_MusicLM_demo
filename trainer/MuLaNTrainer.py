@@ -20,12 +20,14 @@ class TextAudioDataset(Dataset):
 
     def __getitem__(self, idx):
         return self.wavs[idx], self.texts[idx]
+    
+    
 ########################
 #MuLaN
 ########################
 
-wavs = torch.load('wavs_small.pt')
-texts = torch.load('texts_small.pt')
+wavs = torch.load('wavs.pt')
+texts = torch.load('texts.pt')
 
 audio_transformer = AudioSpectrogramTransformer(
     dim = 512,
