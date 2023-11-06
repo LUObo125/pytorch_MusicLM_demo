@@ -12,6 +12,7 @@ $ pip install musiclm-pytorch
 ```bash
 $ pip install audiolm-pytorch
 ```
+then run two setup file
 
 ## Dataset
 I use [MusicCaps](https://www.kaggle.com/datasets/googleai/musiccaps) to train the model, so fist try download the datasets.
