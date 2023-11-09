@@ -18,6 +18,8 @@ then run two setup file
 I use [MusicCaps](https://www.kaggle.com/datasets/googleai/musiccaps) to train the model, so fist try download the datasets.
 You will get a lot of .WAV format audio, PLEASE remember to change the path in trainer/datasetGeneration.py
 
+For w2v-BERT, It all ready been trained. You need download the checkpoint from <https://github.com/facebookresearch/fairseq/blob/main/examples/hubert/README.md>
+
 ## Taining
 Before training, please download the hubert checkpoints, which can be downloaded at
 <https://github.com/facebookresearch/fairseq/tree/main/examples/hubert>
